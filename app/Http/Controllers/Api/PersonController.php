@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+
 use App\Models\Person;
 use Illuminate\Http\Request;
 use App\Http\Requests\PersonRequest;
@@ -9,6 +10,7 @@ use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PersonResource;
+use Yajra\DataTables\Facades\DataTables;
 
 class PersonController extends Controller
 {
@@ -36,7 +38,7 @@ class PersonController extends Controller
      * Display the specified resource.
      */
     public function show(Person $person): JsonResponse
-    {   
+    {
         $person->load(['occurrences', 'address']);
         return response()->json(new PersonResource($person));
     }
@@ -59,5 +61,10 @@ class PersonController extends Controller
         $person->delete();
 
         return response()->noContent();
+    }
+
+    public function datatable(Request $request)
+    {
+        return DataTables::of(Person::query())->make(true);
     }
 }

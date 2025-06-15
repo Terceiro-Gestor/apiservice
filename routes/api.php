@@ -14,3 +14,5 @@ Route::get('/user', function (Request $request) {
 Route::resource('people', PersonController::class);
 Route::resource('occurrence', OccurrenceController::class);
 Route::resource('address', AddressController::class);
+
+Route::get('table/people', [PersonController::class, 'datatable']);
