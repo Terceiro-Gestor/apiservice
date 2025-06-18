@@ -25,8 +25,7 @@ class PersonRequest extends FormRequest
 			'name' => 'required|string',
 			'email' => 'required|string',
 			'phone' => 'string',
-			'birth_date' => 'nullable|date',
-            'address_id' => 'nullable|uuid|exists:addresses,id'
+            'birth_date' => 'nullable|date',
         ];
     }
 }

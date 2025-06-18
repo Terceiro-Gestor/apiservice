@@ -31,8 +31,6 @@
         @include('people.edit-modal')
     </div>
 
-
-
     <script>
         function peopleComponent() {
             return {
@@ -102,7 +100,6 @@
                         )
                     );
                 },
-
                 openEditModal(person) {
                     this.editPerson = {
                         ...person

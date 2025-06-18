@@ -1,14 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PersonController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/page', function () {
-    return view('apipage');
-});
 
-Route::get('/people', fn() => view('people.index'));
-Route::get('/chamadaapi', fn() => view('api'));
+Route::resource('people', PersonController::class);

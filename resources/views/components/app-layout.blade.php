@@ -1,3 +1,4 @@
+<!-- resources/views/components/app-layout.blade.php -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -29,7 +30,10 @@
 
     <!-- Conteúdo da página -->
     <main class="max-w-6xl mx-auto px-4">
-        @yield('content')
+        <div>
+            {{ $header ?? '' }}
+            {{ $slot }}
+        </div>
     </main>
 
 </body>
