@@ -45,20 +45,8 @@ class PersonController extends Controller
         // Valida os dados da requisição
         $validated = $request->validated();
 
-        // Separa os dados do endereço usando Arr::only()
-        $addressData = Arr::only($validated, [
-            'street',
-            'number',
-            'complement',
-            'district',
-            'city',
-            'state',
-            'country',
-            'postal_code',
-        ]);
-
-        // Cria o endereço
-        $address = Address::create($addressData);
+        // Obtém ou cria o endereço compartilhado
+        $address = Address::findOrCreateFromData($validated);
 
         // Cria a pessoa vinculada ao endereço
         Person::create([
@@ -66,7 +54,7 @@ class PersonController extends Controller
             'email' => $validated['email'],
             'phone' => $validated['phone'],
             'birth_date' => $validated['birth_date'],
-            'address_id' => $address->id,
+            'address_id' => $address->id
         ]);
 
         return Redirect::route('people.index')
@@ -104,27 +92,17 @@ class PersonController extends Controller
     {
         $validated = $request->validated();
 
+        // Obtém ou cria o endereço compartilhado
+        $address = Address::findOrCreateFromData($validated);
+
         // Atualiza os dados da pessoa
         $person->update([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'phone' => $validated['phone'],
             'birth_date' => $validated['birth_date'],
+            'address_id' => $address->id
         ]);
-
-        // Atualiza os dados do endereço, se existir
-        if ($person->address) {
-            $person->address->update(Arr::only($validated, [
-                'street',
-                'number',
-                'complement',
-                'district',
-                'city',
-                'state',
-                'country',
-                'postal_code',
-            ]));
-        }
 
         return Redirect::route('people.index')
             ->with('success', 'Person updated successfully');
@@ -136,5 +114,22 @@ class PersonController extends Controller
 
         return Redirect::route('people.index')
             ->with('success', 'Person deleted successfully');
+    }
+
+    public function address($validated)
+    {
+        // Busca ou cria o endereço compartilhado
+        $address = Address::firstOrCreate([
+            'street' => $validated['street'],
+            'number' => $validated['number'],
+            'complement' => $validated['complement'] ?? null,
+            'district' => $validated['district'],
+            'city' => $validated['city'],
+            'state' => $validated['state'],
+            'country' => $validated['country'],
+            'postal_code' => $validated['postal_code'],
+        ]);
+
+        return $address;
     }
 }

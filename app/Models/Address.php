@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Support\Arr;
 
 /**
  * Class Address
@@ -26,7 +27,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
  */
 class Address extends Model
 {
-    
+
     protected $perPage = 20;
     use HasUuids;
     protected $casts = [
@@ -42,6 +43,21 @@ class Address extends Model
      */
     protected $fillable = ['street', 'number', 'complement', 'district', 'city', 'state', 'country', 'postal_code'];
 
+    public static function findOrCreateFromData(array $data): Address
+    {
+        $addressData = Arr::only($data, [
+            'street',
+            'number',
+            'complement',
+            'district',
+            'city',
+            'state',
+            'country',
+            'postal_code',
+        ]);
+
+        return self::firstOrCreate($addressData);
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -50,5 +66,4 @@ class Address extends Model
     {
         return $this->hasMany(\App\Models\Person::class, 'id', 'address_id');
     }
-    
 }
