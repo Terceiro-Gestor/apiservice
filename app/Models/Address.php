@@ -3,19 +3,20 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Traits\HasUuid;
-
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 /**
  * Class Address
  *
  * @property $id
  * @property $street
- * @property $city
- * @property $country
- * @property $state
- * @property $postal_code
+ * @property $number
  * @property $complement
+ * @property $district
+ * @property $city
+ * @property $state
+ * @property $country
+ * @property $postal_code
  * @property $created_at
  * @property $updated_at
  *
@@ -26,15 +27,20 @@ use App\Traits\HasUuid;
 class Address extends Model
 {
     
-    use HasUuid;
     protected $perPage = 20;
+    use HasUuids;
+    protected $casts = [
+        'id' => 'string', // ou simplesmente remova essa linha
+    ];
+    protected $keyType = 'string';
+    public $incrementing = false;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
-    protected $fillable = ['street', 'city', 'country', 'state', 'postal_code', 'complement'];
+    protected $fillable = ['street', 'number', 'complement', 'district', 'city', 'state', 'country', 'postal_code'];
 
 
     /**

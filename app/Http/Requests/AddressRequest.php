@@ -23,11 +23,13 @@ class AddressRequest extends FormRequest
     {
         return [
 			'street' => 'string',
-			'city' => 'string',
-			'country' => 'string',
-			'state' => 'string',
-			'postal_code' => 'string',
+			'number' => 'string',
 			'complement' => 'string',
+			'district' => 'string',
+			'city' => 'string',
+			'state' => 'string',
+			'country' => 'string',
+			'postal_code' => 'string',
         ];
     }
 }

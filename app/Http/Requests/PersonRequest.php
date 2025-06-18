@@ -22,10 +22,21 @@ class PersonRequest extends FormRequest
     public function rules(): array
     {
         return [
-			'name' => 'required|string',
-			'email' => 'required|string',
-			'phone' => 'string',
+            'id' => 'nullable|string',
+            'name' => 'required|string',
+            'email' => 'required|string',
+            'phone' => 'string',
             'birth_date' => 'nullable|date',
+            
+            // Endereço
+            'street' => 'nullable|string|max:255',
+            'number' => 'nullable|string|max:50',
+            'complement' => 'nullable|string|max:255',
+            'district' => 'nullable|string|max:255',
+            'city' => 'nullable|string|max:255',
+            'state' => 'nullable|string|max:100',
+            'country' => 'nullable|string|max:100',
+            'postal_code' => 'nullable|string|max:20',
         ];
     }
 }
