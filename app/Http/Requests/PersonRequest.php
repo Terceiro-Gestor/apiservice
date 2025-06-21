@@ -22,17 +22,18 @@ class PersonRequest extends FormRequest
     public function rules(): array
     {
         return [
-			'photo' => 'string',
+			'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
 			'full_name' => 'required|string',
 			'social_name' => 'string',
-			'birth_date' => 'required',
-			'ethnicity' => 'string',
-			'nationality' => 'string',
-			'place_of_birth' => 'string',
-			'marital_status' => 'string',
-			'nis' => 'string',
-			'cpf' => 'string',
-			'rg' => 'string',
+			'birth_date' => 'required|date',
+			'ethnicity' => 'nullable|string',
+            'marital_status' => 'nullable|string',
+			'country' => 'nullable|string',
+			'state' => 'nullable|string',
+            'city' => 'nullable|string',
+			'nis' => 'nullable|string',
+			'cpf' => 'nullable|string',
+			'rg' => 'nullable|string',
 
             // Address
             'street' => 'nullable|string|max:255',

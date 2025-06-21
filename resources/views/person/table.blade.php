@@ -1,6 +1,11 @@
-<table id="myTable" class="">
+<table id="myTable" class="w-full">
     <thead>
         <tr>
+            <th>
+                <span class="flex items-center">
+                    Foto
+                </span>
+            </th>
             <th>
                 <span class="flex items-center">
                     Nome
@@ -30,9 +35,13 @@
     <tbody>
         @foreach ($people as $person)
             <tr class="hover:bg-gray-100 dark:hover:bg-gray-800">
-
                 <td class="font-medium text-black-900 whitespace-nowrap dark:text-white">
-                    {{ $person->name }}</td>
+                    <img class="rounded-full w-8 h-8"
+                        src="{{ $person->photo ? asset('storage/' . $person->photo) : asset('images/default-user.png') }}"
+                        alt="Foto">
+                </td>
+                <td class="font-medium text-black-900 whitespace-nowrap dark:text-white">
+                    {{ $person->social_name }}</td>
                 <td>
                     {{ $person->email }}</td>
                 <td>

@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('contacts', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('people_id');
+            $table->uuid('person_id');
             $table->enum('type', ['Celular', 'Telefone', 'Email']);
             $table->string('value', 255);
-            $table->foreign('people_id')->references('id')->on('people')->onDelete('cascade');
+            $table->foreign('person_id')->references('id')->on('people')->onDelete('cascade');
             $table->timestamps();
         });
     }

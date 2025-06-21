@@ -22,7 +22,7 @@ class ContactRequest extends FormRequest
     public function rules(): array
     {
         return [
-			'people_id' => 'required',
+			'person_id' => 'required',
 			'type' => 'required',
 			'value' => 'required|string',
         ];

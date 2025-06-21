@@ -15,9 +15,10 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
  * @property $birth_date
  * @property $gender
  * @property $ethnicity
- * @property $nationality
- * @property $place_of_birth
  * @property $marital_status
+ * @property $country
+ * @property $state
+ * @property $city
  * @property $nis
  * @property $cpf
  * @property $rg
@@ -55,8 +56,7 @@ class Person extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['photo', 'full_name', 'social_name', 'birth_date', 'gender', 'ethnicity', 'nationality', 'place_of_birth', 'marital_status', 'nis', 'cpf', 'rg', 'address_id'];
-
+    protected $fillable = ['photo', 'full_name', 'social_name', 'birth_date', 'gender', 'ethnicity', 'marital_status', 'country', 'state', 'city', 'nis', 'cpf', 'rg', 'address_id'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -79,7 +79,7 @@ class Person extends Model
      */
     public function contacts()
     {
-        return $this->hasMany(\App\Models\Contact::class, 'id', 'people_id');
+        return $this->hasMany(\App\Models\Contact::class, 'person_id', 'id');
     }
 
     /**

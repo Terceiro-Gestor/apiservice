@@ -43,36 +43,49 @@ class PersonController extends Controller
     public function store(PersonRequest $request): RedirectResponse
     {
         // Valida os dados da requisição
+
         $validated = $request->validated();
 
-        DB::transaction(function () use ($validated) {
+        DB::transaction(function () use ($validated, $request) {
 
-            // Obtém ou cria o endereço compartilhado
+            // 1. Busca ou cria o endereço compartilhado
             $address = Address::findOrCreateFromData($validated);
 
-            // 2. Cria a Pessoa
-            $person = Person::create([
-                'name' => $validated['name'],
-                'email' => $validated['email'],
-                'phone' => $validated['phone'],
-                'birth_date' => $validated['birth_date'],
-                'address_id' => $address->id
-            ]);
+            // 2. Salva a foto, se enviada
+            $photoPath = null;
+            if ($request->hasFile('photo')) {
+                $photoPath = $request->file('photo')->store('people_photos', 'public');
+                // Isso salva em: storage/app/public/people_photos/xxxx.jpg
+            }
 
-            // 3. Contatos adicionais
-            if (!empty($validated['contacts'])) {
-                foreach ($validated['contacts'] as $contactData) {
-                    $person->contacts()->create($contactData);
+            // 2. Cria a pessoa vinculada ao endereço
+            $person = Person::create([
+                'photo'          => $photoPath, // salva caminho no banco
+                'full_name'      => $validated['full_name'],
+                'social_name'    => $validated['social_name'],
+                'birth_date'     => $validated['birth_date'],
+                'ethnicity'      => $validated['ethnicity'],
+                'marital_status' => $validated['marital_status'],
+                'country'        => $validated['country'],
+                'state'          => $validated['state'],
+                'city'           => $validated['city'],
+                'nis'            => $validated['nis'],
+                'cpf'            => $validated['cpf'],
+                'rg'             => $validated['rg'],
+                'address_id'     => $address->id,
+            ]);
+            
+            // 4. Salvar contatos, se houver
+            foreach ($validated['contacts'] ?? [] as $contact) {
+                // Evita salvar contatos vazios
+                if (!empty($contact['type']) && !empty($contact['value'])) {
+                    $person->contacts()->create([
+                        'type'  => $contact['type'],
+                        'value' => $contact['value'],
+                    ]);
                 }
             }
         });
-
-
-
-
-
-
-
 
         return Redirect::route('people.index')
             ->with('success', 'Person created successfully.');
@@ -94,12 +107,12 @@ class PersonController extends Controller
     {
         // Carrega a pessoa com todos os relacionamentos
         $person = Person::with([
-            'address',
+            'address', 'contacts'
         ])->findOrFail($id);
 
         $address = $person->address; // Obtém o endereço associado à pessoa
-        $contact = $person->contact; // Obtém o contato associado à pessoa, se existir
-        return view('person.edit', compact('person', 'address'))
+        $contacts = $person->contacts; // Obtém o contato associado à pessoa, se existir
+        return view('person.edit', compact('person', 'address', 'contacts'))
             ->with('i', 0);
     }
 

@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 /**
  * Class Contact
  *
@@ -21,14 +21,18 @@ use Illuminate\Database\Eloquent\Model;
 class Contact extends Model
 {
     
+    use HasUuids;
     protected $perPage = 20;
+    protected $casts = ['id' => 'string'];
+    protected $keyType = 'string';
+    public $incrementing = false;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
-    protected $fillable = ['people_id', 'type', 'value'];
+    protected $fillable = ['person_id', 'type', 'value'];
 
 
     /**
@@ -36,7 +40,7 @@ class Contact extends Model
      */
     public function person()
     {
-        return $this->belongsTo(\App\Models\Person::class, 'people_id', 'id');
+        return $this->belongsTo(\App\Models\Person::class, 'person_id', 'id');
     }
     
 }

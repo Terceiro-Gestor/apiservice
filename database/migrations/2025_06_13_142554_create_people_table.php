@@ -18,10 +18,11 @@ return new class extends Migration
             $table->string('social_name')->nullable();
             $table->date('birth_date');
             $table->enum('gender', ['Masculino', 'Feminino', 'Outros'])->nullable();
-            $table->string('ethnicity')->nullable();
-            $table->string('nationality')->nullable();
-            $table->string('place_of_birth')->nullable();
-            $table->string('marital_status')->nullable();
+            $table->enum('ethnicity', ['Branca', 'Preta', 'Parda', 'Amarela', 'Indígena', 'Outro'])->nullable();
+            $table->enum('marital_status', ['Solteiro(a)', 'Casado(a)', 'Divorciado(a)', 'Viúvo(a)', 'Separado(a)', 'Outro' ])->nullable();
+            $table->string('country')->nullable();
+            $table->string('state')->nullable();
+            $table->string('city')->nullable();
             $table->string('nis')->nullable();
             $table->string('cpf')->nullable()->unique();
             $table->string('rg')->nullable();
