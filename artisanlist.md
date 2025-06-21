@@ -8,6 +8,12 @@ php artisan migrate
 php artisan make:migration create_products_table
 php artisan migrate:fresh
 
+
+php artisan view:clear
+php artisan cache:clear
+php artisan config:clear
+php artisan route:clear
+
 ## CRUD
 
 - composer require ibex/crud-generator --dev

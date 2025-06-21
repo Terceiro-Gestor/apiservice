@@ -7,11 +7,12 @@ use App\Models\Person;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\Address;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use App\Http\Requests\PersonRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
-
+use Illuminate\Support\Facades\DB;
 
 class PersonController extends Controller
 {
@@ -30,9 +31,9 @@ class PersonController extends Controller
     public function create(): View
     {
         $person = new Person();
-        $address = null; // Adicione esta linha
-
-        return view('person.create', compact('person', 'address'))
+        $address = null;
+        $contact = null;
+        return view('person.create', compact('person', 'address', 'contact'))
             ->with('i', 0);
     }
 
@@ -41,21 +42,37 @@ class PersonController extends Controller
      */
     public function store(PersonRequest $request): RedirectResponse
     {
-
         // Valida os dados da requisição
         $validated = $request->validated();
 
-        // Obtém ou cria o endereço compartilhado
-        $address = Address::findOrCreateFromData($validated);
+        DB::transaction(function () use ($validated) {
 
-        // Cria a pessoa vinculada ao endereço
-        Person::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'phone' => $validated['phone'],
-            'birth_date' => $validated['birth_date'],
-            'address_id' => $address->id
-        ]);
+            // Obtém ou cria o endereço compartilhado
+            $address = Address::findOrCreateFromData($validated);
+
+            // 2. Cria a Pessoa
+            $person = Person::create([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'phone' => $validated['phone'],
+                'birth_date' => $validated['birth_date'],
+                'address_id' => $address->id
+            ]);
+
+            // 3. Contatos adicionais
+            if (!empty($validated['contacts'])) {
+                foreach ($validated['contacts'] as $contactData) {
+                    $person->contacts()->create($contactData);
+                }
+            }
+        });
+
+
+
+
+
+
+
 
         return Redirect::route('people.index')
             ->with('success', 'Person created successfully.');
@@ -81,6 +98,7 @@ class PersonController extends Controller
         ])->findOrFail($id);
 
         $address = $person->address; // Obtém o endereço associado à pessoa
+        $contact = $person->contact; // Obtém o contato associado à pessoa, se existir
         return view('person.edit', compact('person', 'address'))
             ->with('i', 0);
     }
@@ -108,12 +126,11 @@ class PersonController extends Controller
             ->with('success', 'Person updated successfully');
     }
 
-    public function destroy($id): RedirectResponse
+    public function destroy($id): Response
     {
         Person::find($id)->delete();
 
-        return Redirect::route('people.index')
-            ->with('success', 'Person deleted successfully');
+        return response()->noContent();
     }
 
     public function address($validated)

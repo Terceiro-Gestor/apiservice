@@ -22,13 +22,19 @@ class PersonRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'nullable|string',
-            'name' => 'required|string',
-            'email' => 'required|string',
-            'phone' => 'string',
-            'birth_date' => 'nullable|date',
-            
-            // Endereço
+			'photo' => 'string',
+			'full_name' => 'required|string',
+			'social_name' => 'string',
+			'birth_date' => 'required',
+			'ethnicity' => 'string',
+			'nationality' => 'string',
+			'place_of_birth' => 'string',
+			'marital_status' => 'string',
+			'nis' => 'string',
+			'cpf' => 'string',
+			'rg' => 'string',
+
+            // Address
             'street' => 'nullable|string|max:255',
             'number' => 'nullable|string|max:50',
             'complement' => 'nullable|string|max:255',
@@ -37,6 +43,9 @@ class PersonRequest extends FormRequest
             'state' => 'nullable|string|max:100',
             'country' => 'nullable|string|max:100',
             'postal_code' => 'nullable|string|max:20',
+
+            // Contacts
+            'contacts' => 'nullable'
         ];
     }
 }

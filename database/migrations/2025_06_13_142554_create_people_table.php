@@ -13,11 +13,19 @@ return new class extends Migration
     {
         Schema::create('people', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->string('phone')->nullable();
-            $table->date('birth_date')->nullable();
-            $table->uuid('address_id')->nullable(); // ou obrigatório, se necessário
+            $table->string('photo')->nullable();
+            $table->string('full_name');
+            $table->string('social_name')->nullable();
+            $table->date('birth_date');
+            $table->enum('gender', ['Masculino', 'Feminino', 'Outros'])->nullable();
+            $table->string('ethnicity')->nullable();
+            $table->string('nationality')->nullable();
+            $table->string('place_of_birth')->nullable();
+            $table->string('marital_status')->nullable();
+            $table->string('nis')->nullable();
+            $table->string('cpf')->nullable()->unique();
+            $table->string('rg')->nullable();
+            $table->uuid('address_id')->nullable();
             $table->timestamps();
 
             $table->foreign('address_id')->references('id')->on('addresses')->onDelete('set null');

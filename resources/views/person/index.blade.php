@@ -15,19 +15,8 @@
         </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-full mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="">
-                <div class="w-full">
-                    <div class="flow-root">
-                        <div class="mt-8 overflow-x-auto">
-                            <div class="inline-block min-w-full py-2 align-middle">
-                                @include('person.table')
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="py-6 inline-block min-w-full align-middle sm:p-8 bg-white shadow sm:rounded-lg">
+        @include('person.table')
     </div>
+
 </x-app-layout>

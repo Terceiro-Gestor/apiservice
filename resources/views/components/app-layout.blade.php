@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
-    <title>@yield('title', 'Sistema')</title>
+    <title>@yield('title', 'Alvorada')</title>
     @vite(['resources/js/app.js', 'resources/css/app.css'])
     @stack('scripts')
 
@@ -29,7 +29,7 @@
     </header>
 
     <!-- Conteúdo da página -->
-    <main class="max-w-6xl mx-auto px-4">
+    <main class="m-4 ">
         <div>
             {{ $header ?? '' }}
             {{ $slot }}
