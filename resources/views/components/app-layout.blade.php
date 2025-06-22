@@ -13,29 +13,49 @@
 
 </head>
 
-<body class="bg-gray-100 text-gray-900 font-sans">
+<body x-data="{ page: 'ecommerce', loaded: true, darkMode: false, stickyMenu: false, sidebarToggle: false, scrollTop: false }" 
+x-init="darkMode = JSON.parse(localStorage.getItem('darkMode') ?? 'false');
+$watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))" :class="{ 'dark bg-gray-900': darkMode }">
 
-    <!-- Menu superior -->
-    <header class="bg-white shadow mb-6">
-        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-            <h1 class="text-xl font-bold">
-                <a href="/" class="text-blue-600 hover:text-blue-800">Meu Sistema</a>
-            </h1>
-            <nav class="space-x-4">
-                <a href="/people" class="text-gray-700 hover:text-blue-600">Pessoas</a>
-                <a href="/page" class="text-gray-700 hover:text-blue-600">Página Teste</a>
-                <!-- Adicione outros links aqui -->
-            </nav>
-        </div>
-    </header>
+    <!-- ===== Preloader Start ===== -->
+    <div x-show="loaded" x-init="window.addEventListener('DOMContentLoaded', () => { setTimeout(() => loaded = false, 500) })"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-white dark:bg-black">
+        <div class="h-16 w-16 animate-spin rounded-full border-4 border-brand-500 border-t-transparent"></div>
+    </div>
+    <!-- ===== Preloader End ===== -->
 
-    <!-- Conteúdo da página -->
-    <main class="m-4 ">
-        <div>
-            {{ $header ?? '' }}
-            {{ $slot }}
+    <!-- ===== Page Wrapper Start ===== -->
+    <div class="flex h-screen overflow-hidden">
+
+        <!-- ===== Sidebar Start ===== -->
+        <x-sidebar />
+        <!-- ===== Sidebar End ===== -->
+
+        <!-- Header fixo no topo -->
+        <header class="fixed top-0 left-0 right-0 z-40">
+            <x-header />
+        </header>
+
+        <!-- ===== Content Area Start ===== -->
+        <div class="relative flex flex-col flex-1 overflow-x-hidden overflow-y-auto">
+            <!-- Small Device Overlay Start -->
+            <x-overlay />
+            <!-- Small Device Overlay End -->
+            <!-- ===== Header Start ===== -->
+            <x-header />
+            <!-- ===== Header End ===== -->
+            <!-- ===== Main Content Start ===== -->
+            <main>
+                <div class="p-4 mx-auto max-w-screen-2xl md:p-6">
+                    {{ $slot }}
+                </div>
+            </main>
+            <!-- ===== Main Content End ===== -->
+
         </div>
-    </main>
+
+    </div>
+    @livewire('livewire-ui-modal')
     @livewireScripts()
 </body>
 

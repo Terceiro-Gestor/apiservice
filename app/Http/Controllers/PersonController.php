@@ -71,7 +71,8 @@ class PersonController extends Controller
     public function show(Person $person): View
     {
         $person->load(['address', 'contacts']); // eager load
-        return view('person.show', compact('person'));
+        $contacts = $person->contacts; // ou com eager loading
+        return view('person.show', compact('person', 'contacts'));
     }
 
     /**
