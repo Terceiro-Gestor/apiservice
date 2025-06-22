@@ -9,6 +9,7 @@ import IMask from 'imask';
 
 window.Alpine = Alpine
 window.Swal = Swal;
+window.IMask = IMask;
 
 Alpine.plugin(persist)
 Alpine.start()

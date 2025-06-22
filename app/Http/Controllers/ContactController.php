@@ -35,12 +35,13 @@ class ContactController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ContactRequest $request): RedirectResponse
+    public function store(ContactRequest $request)
     {
-        Contact::create($request->validated());
+        $validated = $request->validated();
+        
+        $contact = Contact::create($validated);
 
-        return Redirect::route('contacts.index')
-            ->with('success', 'Contact created successfully.');
+        return response()->json($contact);
     }
 
     /**
@@ -74,11 +75,10 @@ class ContactController extends Controller
             ->with('success', 'Contact updated successfully');
     }
 
-    public function destroy($id): RedirectResponse
+    public function destroy($id)
     {
-        Contact::find($id)->delete();
+        $contact = Contact::find($id)->delete();
 
-        return Redirect::route('contacts.index')
-            ->with('success', 'Contact deleted successfully');
+        return response()->json($contact);
     }
 }

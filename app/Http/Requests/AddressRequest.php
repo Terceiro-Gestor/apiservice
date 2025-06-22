@@ -13,6 +13,11 @@ class AddressRequest extends FormRequest
     {
         return true;
     }
+    
+    public function expectsJson()
+    {
+        return true;
+    }
 
     /**
      * Get the validation rules that apply to the request.

@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('contacts', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('person_id');
-            $table->enum('type', ['Celular', 'Telefone', 'Email']);
+            $table->enum('type', ['Celular', 'Telefone', 'Email', 'WhatsApp']);
             $table->string('value', 255);
+            $table->boolean('main')->nullable();
             $table->foreign('person_id')->references('id')->on('people')->onDelete('cascade');
             $table->timestamps();
         });

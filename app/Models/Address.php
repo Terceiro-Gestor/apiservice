@@ -30,9 +30,7 @@ class Address extends Model
 
     protected $perPage = 20;
     use HasUuids;
-    protected $casts = [
-        'id' => 'string', // ou simplesmente remova essa linha
-    ];
+    protected $casts = ['id' => 'string'];
     protected $keyType = 'string';
     public $incrementing = false;
 

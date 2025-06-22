@@ -14,6 +14,11 @@ class ContactRequest extends FormRequest
         return true;
     }
 
+    public function expectsJson()
+    {
+        return true;
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -22,9 +27,10 @@ class ContactRequest extends FormRequest
     public function rules(): array
     {
         return [
-			'person_id' => 'required',
+			'person_id' => ['required', 'exists:people,id'],
 			'type' => 'required',
 			'value' => 'required|string',
+            'main' => 'nullable|boolean',
         ];
     }
 }

@@ -22,10 +22,11 @@ class PersonRequest extends FormRequest
     public function rules(): array
     {
         return [
-			'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+			'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
 			'full_name' => 'required|string',
 			'social_name' => 'string',
 			'birth_date' => 'required|date',
+            'gender' => 'nullable|string',
 			'ethnicity' => 'nullable|string',
             'marital_status' => 'nullable|string',
 			'country' => 'nullable|string',
@@ -35,7 +36,7 @@ class PersonRequest extends FormRequest
 			'cpf' => 'nullable|string',
 			'rg' => 'nullable|string',
 
-            // Address
+            /* Address
             'street' => 'nullable|string|max:255',
             'number' => 'nullable|string|max:50',
             'complement' => 'nullable|string|max:255',
@@ -46,7 +47,7 @@ class PersonRequest extends FormRequest
             'postal_code' => 'nullable|string|max:20',
 
             // Contacts
-            'contacts' => 'nullable'
+            'contacts' => 'nullable'*/
         ];
     }
 }

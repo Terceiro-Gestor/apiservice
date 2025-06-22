@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
  * @property $people_id
  * @property $type
  * @property $value
+ * @property $main
  * @property $created_at
  * @property $updated_at
  *
@@ -32,7 +33,7 @@ class Contact extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['person_id', 'type', 'value'];
+    protected $fillable = ['person_id', 'type', 'value', 'main'];
 
 
     /**

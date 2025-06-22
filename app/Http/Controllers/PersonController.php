@@ -13,6 +13,7 @@ use App\Http\Requests\PersonRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class PersonController extends Controller
 {
@@ -31,9 +32,9 @@ class PersonController extends Controller
     public function create(): View
     {
         $person = new Person();
-        $address = null;
-        $contact = null;
-        return view('person.create', compact('person', 'address', 'contact'))
+        //$address = null;
+        //$contact = null;
+        return view('person.create', compact('person'))
             ->with('i', 0);
     }
 
@@ -42,61 +43,34 @@ class PersonController extends Controller
      */
     public function store(PersonRequest $request): RedirectResponse
     {
-        // Valida os dados da requisição
 
+        // Valida os dados da requisição
         $validated = $request->validated();
 
-        DB::transaction(function () use ($validated, $request) {
+        $photoPath = null;
+        if ($request->hasFile('photo')) {
+            $photoPath = $request->file('photo')->store('people_photos', 'public');
+        }
 
-            // 1. Busca ou cria o endereço compartilhado
-            $address = Address::findOrCreateFromData($validated);
+        $data = $validated;
+        if ($photoPath) {
+            $data['photo'] = $photoPath;
+        }
 
-            // 2. Salva a foto, se enviada
-            $photoPath = null;
-            if ($request->hasFile('photo')) {
-                $photoPath = $request->file('photo')->store('people_photos', 'public');
-                // Isso salva em: storage/app/public/people_photos/xxxx.jpg
-            }
-
-            // 2. Cria a pessoa vinculada ao endereço
-            $person = Person::create([
-                'photo'          => $photoPath, // salva caminho no banco
-                'full_name'      => $validated['full_name'],
-                'social_name'    => $validated['social_name'],
-                'birth_date'     => $validated['birth_date'],
-                'ethnicity'      => $validated['ethnicity'],
-                'marital_status' => $validated['marital_status'],
-                'country'        => $validated['country'],
-                'state'          => $validated['state'],
-                'city'           => $validated['city'],
-                'nis'            => $validated['nis'],
-                'cpf'            => $validated['cpf'],
-                'rg'             => $validated['rg'],
-                'address_id'     => $address->id,
-            ]);
-            
-            // 4. Salvar contatos, se houver
-            foreach ($validated['contacts'] ?? [] as $contact) {
-                // Evita salvar contatos vazios
-                if (!empty($contact['type']) && !empty($contact['value'])) {
-                    $person->contacts()->create([
-                        'type'  => $contact['type'],
-                        'value' => $contact['value'],
-                    ]);
-                }
-            }
+        $person = DB::transaction(function () use ($data) {
+            return Person::create($data);
         });
 
-        return Redirect::route('people.index')
+        return Redirect::route('people.edit', $person->id)
             ->with('success', 'Person created successfully.');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show($id): View
+    public function show(Person $person): View
     {
-        $person = Person::find($id);
+        $person->load(['address', 'contacts']); // eager load
         return view('person.show', compact('person'));
     }
 
@@ -107,12 +81,11 @@ class PersonController extends Controller
     {
         // Carrega a pessoa com todos os relacionamentos
         $person = Person::with([
-            'address', 'contacts'
+            'address',
+            'contacts'
         ])->findOrFail($id);
-
-        $address = $person->address; // Obtém o endereço associado à pessoa
-        $contacts = $person->contacts; // Obtém o contato associado à pessoa, se existir
-        return view('person.edit', compact('person', 'address', 'contacts'))
+        //dump($person, $address, $contacts);
+        return view('person.edit', compact('person'))
             ->with('i', 0);
     }
 
@@ -121,21 +94,24 @@ class PersonController extends Controller
      */
     public function update(PersonRequest $request, Person $person): RedirectResponse
     {
+
         $validated = $request->validated();
 
-        // Obtém ou cria o endereço compartilhado
-        $address = Address::findOrCreateFromData($validated);
+        // Se uma nova foto foi enviada
+        if ($request->hasFile('photo')) {
+            // Exclui a foto antiga, se existir
+            if ($person->photo && \Storage::disk('public')->exists($person->photo)) {
+                \Storage::disk('public')->delete($person->photo);
+            }
+            // Salva a nova foto
+            $photoPath = $request->file('photo')->store('people_photos', 'public');
+            $validated['photo'] = $photoPath;
+        }
 
         // Atualiza os dados da pessoa
-        $person->update([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'phone' => $validated['phone'],
-            'birth_date' => $validated['birth_date'],
-            'address_id' => $address->id
-        ]);
+        $person->update($validated);
 
-        return Redirect::route('people.index')
+        return Redirect::route('people.edit', $person->id)
             ->with('success', 'Person updated successfully');
     }
 
@@ -146,20 +122,16 @@ class PersonController extends Controller
         return response()->noContent();
     }
 
-    public function address($validated)
+    public function setAddress(Request $request, Person $person)
     {
-        // Busca ou cria o endereço compartilhado
-        $address = Address::firstOrCreate([
-            'street' => $validated['street'],
-            'number' => $validated['number'],
-            'complement' => $validated['complement'] ?? null,
-            'district' => $validated['district'],
-            'city' => $validated['city'],
-            'state' => $validated['state'],
-            'country' => $validated['country'],
-            'postal_code' => $validated['postal_code'],
+        $validated = $request->validate([
+            'address_id' => 'required|exists:addresses,id',
         ]);
 
-        return $address;
+        $person->address_id = $validated['address_id'];
+        $person->save();
+
+        // Pode retornar o endereço completo se quiser
+        return response()->json($person->address);
     }
 }

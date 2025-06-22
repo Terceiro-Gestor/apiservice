@@ -1,4 +1,4 @@
-<div class="">
+<div class="" x-data>
     <!-- Foto -->
     <fieldset class="border border-gray-300 rounded p-6 mt-4 grid grid-cols-2" x-data="photoView()">
         <legend class="text-sm font-semibold text-gray-700 px-2">Foto</legend>
@@ -44,14 +44,15 @@
         <div>
             <x-input-label for="gender" :value="__('Gênero')" />
             <select id="gender" name="gender"
-                class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+                class="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
                 autocomplete="gender">
                 <option value="">Selecione o gênero</option>
-                <option value="Male" {{ old('gender', $person?->gender) == 'Male' ? 'selected' : '' }}>Masculino
+                <option value="Masculino" {{ old('gender', $person?->gender) == 'Masculino' ? 'selected' : '' }}>
+                    Masculino
                 </option>
-                <option value="Female" {{ old('gender', $person?->gender) == 'Female' ? 'selected' : '' }}>Feminino
+                <option value="Feminino" {{ old('gender', $person?->gender) == 'Feminino' ? 'selected' : '' }}>Feminino
                 </option>
-                <option value="Other" {{ old('gender', $person?->gender) == 'Other' ? 'selected' : '' }}>Outro
+                <option value="Outro" {{ old('gender', $person?->gender) == 'Outro' ? 'selected' : '' }}>Outro
                 </option>
             </select>
             <x-input-error class="mt-2" :messages="$errors->get('gender')" />
@@ -59,7 +60,7 @@
         <div>
             <x-input-label for="ethnicity" :value="__('Etnia')" />
             <select id="ethnicity" name="ethnicity"
-                class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+                class="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
                 autocomplete="ethnicity">
                 <option value="">Selecione a etnia</option>
                 <option value="Branca" {{ old('ethnicity', $person?->ethnicity) == 'Branca' ? 'selected' : '' }}>
@@ -85,7 +86,7 @@
         <div>
             <x-input-label for="marital_status" :value="__('Estado Civil')" />
             <select id="marital_status" name="marital_status"
-                class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+                class="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
                 autocomplete="marital_status">
                 <option value="">Selecione o estado civil</option>
                 <option value="Solteiro(a)"
@@ -111,50 +112,7 @@
         </div>
     </fieldset>
 
-
-    <fieldset class="border border-gray-300 rounded p-6 col-span-2 mt-4">
-        <legend class="text-sm font-semibold text-gray-700 px-2">Naturalidade</legend>
-        <div class="grid grid-cols-2 gap-3" x-data="selectCountryStateCity()" x-init="init()">
-
-            <!-- País -->
-            <div class='mb-3'>
-                <x-input-label for="country" :value="__('País')" />
-                <select id="country" name="country" x-model="selectedCountry"
-                    class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
-                    <option value="">Selecione o país</option>
-                    <template x-for="country in countries" :key="country.iso2">
-                        <option :value="country.iso2" x-text="country.name"></option>
-                    </template>
-                </select>
-            </div>
-
-            <!-- Estado -->
-            <div class='mb-3' x-show="states.length > 0">
-                <x-input-label for="state" :value="__('Estado')" />
-                <select id="state" name="state" x-model="selectedState"
-                    class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
-                    <option value="">Selecione o estado</option>
-                    <template x-for="state in states" :key="state.state_code">
-                        <option :value="state.state_code" x-text="state.name"></option>
-                    </template>
-                </select>
-            </div>
-
-            <!-- Cidade -->
-            <div class='mb-3' x-show="cities.length > 0">
-                <x-input-label for="city" :value="__('Cidade')" />
-                <select id="city" name="city" x-model="selectedCity"
-                    class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
-                    <option value="">Selecione a cidade</option>
-                    <template x-for="(city, idx) in cities" :key="selectedState + '-' + city + '-' + idx">
-                        <option :value="city" x-text="city"></option>
-                    </template>
-                </select>
-            </div>
-        </div>
-    </fieldset>
-
-
+    <!-- Documentação Pessoal -->
     <fieldset class="border border-gray-300 rounded p-6 col-span-2 mt-4">
         <legend class="text-sm font-semibold text-gray-700 px-2">Documentação Pessoal</legend>
         <div>
@@ -172,9 +130,45 @@
         <div>
             <x-input-label for="rg" :value="__('RG')" />
             <x-text-input x-ref="rg" x-init="IMask($refs.rg, { mask: '00.000.000-00' })" maxlength="14" id="rg" name="rg"
-                type="text" class="mt-1 block w-full" :value="old('rg', $person?->rg)" autocomplete="rg" placeholder="Rg" />
+                type="text" class="mt-1 block w-full" :value="old('rg', $person?->rg)" autocomplete="rg" placeholder="RG" />
             <x-input-error class="mt-2" :messages="$errors->get('rg')" />
         </div>
+    </fieldset>
+
+    <!-- Naturalidade -->
+    <fieldset class="border border-gray-300 rounded p-6 col-span-2 mt-4">
+        <legend class="text-sm font-semibold text-gray-700 px-2">Naturalidade</legend>
+        <div class="grid grid-cols-2 gap-3" x-data="selectCountryStateCity()" x-init="init()">
+
+            <!-- País -->
+            <div class="mb-3">
+                <x-input-label for="country" :value="__('País')" />
+                <select id="country" name="country" x-model="selectedCountry"
+                    x-html="renderOptions(countries, selectedCountry)"
+                    class="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+                </select>
+            </div>
+
+            <!-- Estado -->
+            <div class="mb-3">
+                <x-input-label for="state" :value="__('Estado')" />
+                <select id="state" name="state" x-model="selectedState"
+                    x-html="renderOptions(states, selectedState)"
+                    class="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+                </select>
+            </div>
+
+            <!-- Cidade -->
+            <div class="mb-3">
+                <x-input-label for="city" :value="__('Cidade')" />
+                <select id="city" name="city" x-model="selectedCity"
+                    x-html="renderOptions(cities, selectedCity)"
+                    class="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+                </select>
+            </div>
+
+        </div>
+
     </fieldset>
 
 </div>
@@ -190,60 +184,65 @@
             cities: [],
             selectedCountry: '{{ old('country', $person?->country ?? 'Brazil') }}',
             selectedState: '{{ old('state', $person?->state ?? '') }}',
-            selectedCity: '{{ old('city', $person?->city ?? 'Ribeirão Preto') }}',
+            selectedCity: '{{ old('city', $person?->city ?? '') }}',
+
             async init() {
-
-                // Carrega todos os estados (e países)
+                // 1. Carrega todos os países e estados
                 const statesRes = await fetch('/data/states.json');
-                this.statesAll = (await statesRes.json()).data;
-                // Monta lista de países a partir dos estados
-                this.countries = this.statesAll.map(c => ({
-                    name: c.name,
-                    iso2: c.iso2,
-                    iso3: c.iso3
-                }));
+                const statesJson = await statesRes.json();
+                this.statesAll = statesJson.data;
+                this.countries = this.statesAll.map(c => c.name);
 
-                // Carrega todas as cidades
+                // 2. Carrega todas as cidades (por país)
                 const citiesRes = await fetch('/data/cities.json');
-                this.citiesAll = (await citiesRes.json()).data;
+                const citiesJson = await citiesRes.json();
+                this.citiesAll = citiesJson.data;
 
-                // Inicializa selects se já houver valores
-                if (this.selectedCountry) this.updateStates();
-                if (this.selectedState) this.updateCities();
+                // 3. Atualiza os selects iniciais
+                this.updateStates();
+                this.updateCities();
 
-                // Observa mudanças
+                // 4. Observadores
                 this.$watch('selectedCountry', () => {
-                    this.selectedState = '';
-                    this.selectedCity = '';
                     this.updateStates();
-                    this.cities = [];
-                });
-                this.$watch('selectedState', () => {
-                    this.selectedCity = '';
                     this.updateCities();
                 });
+
+                this.$watch('selectedState', () => {
+                    // Nenhuma ação necessária, já que cidades são por país
+                });
             },
+
             updateStates() {
-                const country = this.statesAll.find(c => c.iso2 === this.selectedCountry);
-                this.states = country ? country.states : [];
+                const country = this.statesAll.find(c => c.name === this.selectedCountry);
+                this.states = country ? country.states.map(s => s.name) : [];
+                if (!this.states.includes(this.selectedState)) {
+                    this.selectedState = '';
+                }
             },
+
             updateCities() {
-                const country = this.citiesAll.find(c => c.iso2 === this.selectedCountry);
-                if (!country) {
-                    this.cities = [];
-                    return;
+                const country = this.citiesAll.find(c => c.country === this.selectedCountry);
+                this.cities = country ? [...new Set(country.cities)] : [];
+                if (!this.cities.includes(this.selectedCity)) {
+                    this.selectedCity = '';
                 }
-                // Se o país tem estados, filtra pelas cidades do estado selecionado
-                if (this.selectedState && country.states) {
-                    const state = country.states.find(s => s.state_code === this.selectedState);
-                    this.cities = state && state.cities ? state.cities : [];
-                } else {
-                    // Se não tem estados, mostra todas as cidades do país
-                    this.cities = country.cities || [];
+            },
+
+            renderOptions(items, selectedValue = '', placeholder = 'Selecione') {
+                let html = `<option value="">${placeholder}</option>`;
+                for (let item of items) {
+                    const isSelected = item === selectedValue ? ' selected' : '';
+                    html += `<option value="${item}"${isSelected}>${item}</option>`;
                 }
+                return html;
             }
         }
     }
+
+
+
+
 
     function photoView() {
         return {

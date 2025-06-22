@@ -35,12 +35,15 @@ class AddressController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(AddressRequest $request): RedirectResponse
+    public function store(AddressRequest $request)
     {
-        Address::create($request->validated());
+        // Pega os dados validados do formulário
+        $data = $request->validated();
+        
+        // Busca ou cria o endereço com esses dados
+        $address = Address::findOrCreateFromData($data);
 
-        return Redirect::route('addresses.index')
-            ->with('success', 'Address created successfully.');
+        return response()->json($address);
     }
 
     /**
