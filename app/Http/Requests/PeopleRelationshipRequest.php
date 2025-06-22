@@ -22,9 +22,21 @@ class PeopleRelationshipRequest extends FormRequest
     public function rules(): array
     {
         return [
-			'person_id' => 'required',
-			'related_person_id' => 'required',
-			'relationship' => 'required',
+            'person_id' => 'required',
+            'full_name'       => ['required', 'string', 'max:255'],
+            'birth_date'      => ['required', 'date'],
+            'relationship'    => ['required', 'string', 'max:50'],
+            'social_name'     => ['nullable', 'string', 'max:255'],
+            'gender'          => ['nullable', 'string'],
+            'ethnicity'       => ['nullable', 'string'],
+            'marital_status'  => ['nullable', 'string'],
+            'nis'             => ['nullable', 'string'],
+            'cpf'             => ['nullable', 'string'],
+            'rg'              => ['nullable', 'string'],
+            'country'         => ['nullable', 'string'],
+            'state'           => ['nullable', 'string'],
+            'city'            => ['nullable', 'string'],
+            'photo'         => ['nullable', 'image', 'max:2048'],
         ];
     }
 }

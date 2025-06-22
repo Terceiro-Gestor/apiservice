@@ -43,7 +43,7 @@ class PeopleRelationship extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function person()
+    public function relatedPeopleRelationships()
     {
         return $this->belongsTo(\App\Models\Person::class, 'related_person_id', 'id');
     }

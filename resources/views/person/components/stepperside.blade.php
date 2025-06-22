@@ -85,14 +85,14 @@
     </li>
 
     <li class="relative flex-1 w-full after:content-[''] after:w-0.5 after:h-full after:inline-block after:absolute after:-bottom-11 after:left-1/2 transition-all"
-        :class="step > 10 ? 'after:bg-indigo-600' : 'after:bg-gray-200'">
+        :class="step > 4 ? 'after:bg-indigo-600' : 'after:bg-gray-200'">
         <div class="flex items-center justify-center gap-8 w-full">
-            <button type="button" class="w-full" @click="step = 10">
+            <button type="button" class="w-full" @click="step = 4">
                 <div class="flex items-center gap-3.5 p-3.5 rounded-xl relative z-10 w-full transition"
-                    :class="step >= 10 ? 'bg-indigo-50 border border-indigo-600' : 'bg-gray-50 border border-gray-50'">
+                    :class="step >= 4 ? 'bg-indigo-50 border border-indigo-600' : 'bg-gray-50 border border-gray-50'">
                     <div class="rounded-lg flex items-center justify-center transition"
-                        :class="step >= 10 ? 'bg-indigo-600' : 'bg-gray-200'">
-                        <span :class="step >= 10 ? 'text-white' : 'text-gray-600'" class="p-3 transition">
+                        :class="step >= 4 ? 'bg-indigo-600' : 'bg-gray-200'">
+                        <span :class="step >= 4 ? 'text-white' : 'text-gray-600'" class="p-3 transition">
                             <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor" class="size-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
@@ -101,7 +101,7 @@
                     </div>
                     <div class="flex items-start rounded-md justify-center flex-col">
                         <h6 class="text-base font-semibold text-black mb-0.5">
-                            Confirmar
+                            Familiares
                         </h6>
                     </div>
                 </div>

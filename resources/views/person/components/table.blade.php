@@ -50,11 +50,9 @@
                     {{ $person->birth_date }}</td>
 
                 <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900">
-
-
                     <div class="inline-flex rounded-md shadow-xs" role="group">
                         <button type="button"
-                            class="cursor-pointer inline-flex items-center px-4 py-2 text-white bg-green-400 rounded-s-lg hover:bg-green-500 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white"
+                            class="cursor-pointer focus:outline-none text-white bg-green-400 hover:bg-green-500 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-900"
                             onclick="window.location.href='{{ route('people.show', $person->id) }}'">
                             <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                 fill="currentColor" viewBox="0 0 20 20">

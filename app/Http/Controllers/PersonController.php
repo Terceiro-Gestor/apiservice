@@ -84,8 +84,10 @@ class PersonController extends Controller
             'address',
             'contacts'
         ])->findOrFail($id);
+
+        $contacts = $person->contacts; // ou com eager loading
         //dump($person, $address, $contacts);
-        return view('person.edit', compact('person'))
+        return view('person.edit', compact('person', 'contacts'))
             ->with('i', 0);
     }
 

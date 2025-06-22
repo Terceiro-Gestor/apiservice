@@ -1,18 +1,19 @@
 import './bootstrap';
-import Alpine from 'alpinejs'
-import persist from '@alpinejs/persist'
 import Swal from 'sweetalert2';
-
-
 import { DataTable } from "simple-datatables";
 import IMask from 'imask';
 
-window.Alpine = Alpine
+
 window.Swal = Swal;
 window.IMask = IMask;
 
+/**
+ * import Alpine from 'alpinejs'
+ * import persist from '@alpinejs/persist'
+ * window.Alpine = Alpine
 Alpine.plugin(persist)
 Alpine.start()
+**/
 
 
 if (document.getElementById("myTable") && typeof DataTable !== 'undefined') {

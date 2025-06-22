@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\AddressController;
+use App\Http\Controllers\PeopleRelationshipController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -11,6 +12,13 @@ Route::get('/', function () {
 
 
 Route::resource('people', PersonController::class);
-Route::put('/people/{person}/set-address', [PersonController::class, 'setAddress']);
+
+Route::prefix('people/{person}')->group(function () {
+    Route::resource('contacts', ContactController::class);
+    Route::resource('relationships', PeopleRelationshipController::class)->except(['create', 'edit']);
+});
+
+
 Route::resource('addresses', AddressController::class);
 Route::resource('contacts', ContactController::class);
+

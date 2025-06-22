@@ -23,16 +23,14 @@
 
     <div class="py-6">
 
-        <div x-data="{ step: 1 }" class="grid grid-cols-6 gap-2">
-
-
-            <div class="">
-                <!-- Stepper ou formulário -->
-                @include('person.stepperside')
-            </div>
+        <div x-data="{ step: 1 }" class="">
 
             <!-- Formulário à direita -->
             <div class="col-span-5 p-6 bg-white rounded-lg shadow-md">
+
+                <div class="">
+                    @include('person.components.tabs')
+                </div>
 
                 <div x-show="step === 1">
                     <form class="" method="POST" action="{{ route('people.update', $person->id) }}"
@@ -53,19 +51,18 @@
                 </div>
 
                 <div x-show="step === 2" class=''>
-                    
+
                     <x-address.address-section :person="$person" />
 
                 </div>
 
                 <div x-show="step === 3" class="">
-                
-                    <x-contact.contact-section :person="$person" />
+
+                    <livewire:person-contacts :person="$person" />
 
                 </div>
 
-                <div x-show="step === 10">
-
+                <div x-show="step === 4">
                 </div>
 
             </div>

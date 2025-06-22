@@ -70,8 +70,9 @@ class ContactController extends Controller
     public function update(ContactRequest $request, Contact $contact): RedirectResponse
     {
         $contact->update($request->validated());
+        $personId = $contact->person->id;
 
-        return Redirect::route('contacts.index')
+        return Redirect::route('people.edit', ['person' => $personId])
             ->with('success', 'Contact updated successfully');
     }
 

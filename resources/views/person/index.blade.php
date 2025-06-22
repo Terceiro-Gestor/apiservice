@@ -16,7 +16,7 @@
     </x-slot>
 
     <div class="py-6 inline-block min-w-full align-middle sm:p-8 bg-white shadow sm:rounded-lg">
-        @include('person.table')
+        @include('person.components.table')
     </div>
 
 </x-app-layout>
