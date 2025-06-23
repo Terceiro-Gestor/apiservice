@@ -1,9 +1,9 @@
 <x-app-layout>
 
-    <div x-data="{ step: 1 }" class="">
+    <div class="">
 
         <!-- Formulário à direita -->
-        <div class="p-6 bg-white rounded-lg shadow-md">
+        <div x-data="tabs()" class="p-6 bg-white rounded-lg shadow-md dark:bg-gray-800">
 
             <div class="mb-12">
                 @include('person.components.tabs')
@@ -78,14 +78,8 @@
                                 </button>
                             </div>
                         </div>
-                        <button
-                            wire:click="$dispatch('openModal', { component: 'person-form', arguments: { personId: '{{ $person->id }}' } })"
-                            class="text-blue-600 hover:underline">
-                            Editar
-                        </button>
-                        <button
-                            class="flex w-full items-center justify-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 lg:inline-flex lg:w-auto"
-                            wire:click="$dispatch('openModal', {component: 'person-form', arguments: {personId: 5}})">
+                        <button x-on:click="$dispatch('open-modal', { id: 'person' })"
+                            class="flex w-full items-center justify-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 lg:inline-flex lg:w-auto">
                             <svg class="fill-current" width="18" height="18" viewBox="0 0 18 18" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" clip-rule="evenodd"
@@ -96,6 +90,11 @@
                         </button>
                     </div>
                 </div>
+
+                <x-main-modal id="person" title="{{ $person->full_name }}" class="w-[60vw]">
+                    @include('person.form')
+                </x-main-modal>
+
             </div>
 
             <div x-show="step === 2" class=''>

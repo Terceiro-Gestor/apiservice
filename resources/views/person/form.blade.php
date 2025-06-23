@@ -1,4 +1,4 @@
-<div class="" x-data>
+<div class="w-full" x-data>
     <!-- Foto -->
     <fieldset class="border border-gray-300 rounded p-6 mt-4 grid grid-cols-2" x-data="photoView()">
         <legend class="text-sm font-semibold text-gray-700 px-2">Foto</legend>

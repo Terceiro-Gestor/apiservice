@@ -1,6 +1,6 @@
 <div>
     <div class="flex justify-between items-center mb-2">
-        <h3 class="text-lg font-bold text-gray-700">Contatos</h3>
+        <h3 class="text-lg font-bold text-gray-700 dark:text-white">Contatos</h3>
         <button wire:click="openModal" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
             Novo Contato
         </button>
@@ -17,18 +17,30 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($contacts as $index => $contact)
+                @foreach ($contacts as $contact)
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
                         <th scope="row"
                             class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            {{ $contact['type'] }}
+                            {{ $contact->type }}
                         </th>
-                        <td class="px-6 py-4">{{ $contact['value'] }}</td>
-                        <td class="px-6 py-4">{{ $contact['main'] ? 'Principal' : '' }}</td>
                         <td class="px-6 py-4">
-                            <button wire:click="openModal('{{ $contact['id'] }}')"
+                            @if ($contact->type === 'WhatsApp')
+                                <a href="https://wa.me/{{ $contact->value }}" target="_blank"
+                                    class="text-green-600 hover:underline">
+                                    {{ preg_replace('/(\d{2})(\d{5})(\d{4})/', '($1) $2-$3', $contact->value) }}
+                                </a>
+                                
+                            @elseif ($contact->type === 'Celular')
+                                {{ preg_replace('/(\d{2})(\d{5})(\d{4})/', '($1) $2-$3', $contact->value) }}
+                            @elseif ($contact->type === 'Email')
+                                {{ $contact->value }}
+                            @endif
+                        </td>
+                        <td class="px-6 py-4">{{ $contact->main ? 'Principal' : '' }}</td>
+                        <td class="px-6 py-4">
+                            <button wire:click="openModal('{{ $contact->id }}')"
                                 class="text-blue-600 hover:underline">Editar</button>
-                            <button wire:click="delete('{{ $contact['id'] }}')"
+                            <button wire:click="contactDelete('{{ $contact->id }}')"
                                 class="text-red-600 hover:underline">Remover</button>
                         </td>
                     </tr>
@@ -87,10 +99,3 @@
         </div>
     @endif
 </div>
-
-<script>
-    window.addEventListener('swal', event => {
-        console.log(event.detail[0]); // veja o que está chegando
-        Swal.fire(event.detail[0]);
-    });
-</script>

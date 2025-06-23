@@ -15,7 +15,7 @@
         </div>
     </x-slot>
 
-    <div class="py-6 inline-block min-w-full align-middle sm:p-8 bg-white shadow sm:rounded-lg">
+    <div class="py-6 inline-block min-w-full align-middle sm:p-8 bg-white shadow sm:rounded-lg dark:bg-gray-700">
         @include('person.components.table')
     </div>
 

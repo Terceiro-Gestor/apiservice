@@ -5,9 +5,13 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\Contact;
 use App\Models\Person;
+use App\Traits\HasNotification;
+use Livewire\Attributes\On;
 
 class PersonContacts extends Component
 {
+    use HasNotification;
+
     public $person;
     public $contacts = [];
 
@@ -30,7 +34,7 @@ class PersonContacts extends Component
 
     public function loadContacts()
     {
-        $this->contacts = $this->person->contacts()->get()->toArray();
+        $this->contacts = $this->person->contacts()->get();
     }
 
     public function openModal($contactId = null)
@@ -69,7 +73,7 @@ class PersonContacts extends Component
                 'value' => $this->value,
                 'main' => $this->main,
             ]);
-            $message = "Contato atualizado com sucesso!";
+            $message = "O contato <span class='text-blue-500'>{$contact->value}</span> foi atualizado!";
         } else {
             $contact = Contact::create([
                 'person_id' => $this->person->id,
@@ -77,36 +81,39 @@ class PersonContacts extends Component
                 'value' => $this->value,
                 'main' => $this->main,
             ]);
-            $message = "Contato criado com sucesso!";
+            $message = "O contato <span class='text-blue-500'>{$contact->value}</span> foi adicionado!";
         }
 
         $this->loadContacts();
         $this->showModal = false;
 
         // Emite evento para SweetAlert no JS
-        $this->dispatch('swal', [
-            'title' => 'Contato salvo!',
-            'timer' => 3000,
-            'icon' => 'success',
-            'showConfirmButton' => false
-        ]);
-    }
-    public function delete($id)
-    {
-        $contact = Contact::findOrFail($id);
-        $contact->delete();
-
-        $this->loadContacts();
-        $this->dispatch('swal', [
-            'title' => 'Contato removido com sucesso!',
-            'timer' => 3000,
-            'icon' => 'success',
-            'showConfirmButton' => false
-        ]);
+        $this->sweetSuccess("Sucesso!", $message, "success");
     }
 
     public function render()
     {
         return view('livewire.person-contacts');
+    }
+
+    public function contactDelete($id)
+    {   
+        // Emite evento para SweetAlert no JS
+        $this->sweetConfirm("Atenção!", "Deseja mesmo remover este contato!", $id);
+    }
+
+    #[On('confirmDeleteContact')]
+
+    public function confirmDeleteContact($id)
+    {   
+
+        $contact = Contact::findOrFail($id);
+        $contact->delete(); 
+
+        $this->loadContacts();
+        $message = "O contato <span class='text-blue-500'>{$contact->value}</span> foi removido!";
+
+        // Emite evento para SweetAlert no JS
+        $this->sweetSuccess("Erro!", $message);
     }
 }

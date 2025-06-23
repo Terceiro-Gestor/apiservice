@@ -1,4 +1,4 @@
-<table id="myTable" class="w-full">
+<table id="myTable" class="w-full dark:bg-gray-700">
     <thead>
         <tr>
             <th>
@@ -34,7 +34,7 @@
     </thead>
     <tbody>
         @foreach ($people as $person)
-            <tr class="hover:bg-gray-100 dark:hover:bg-gray-800">
+            <tr class="hover:bg-gray-100 dark:hover:bg-gray-800 dark:bg-gray-700">
                 <td class="font-medium text-black-900 whitespace-nowrap dark:text-white">
                     <img class="rounded-full w-8 h-8"
                         src="{{ $person->photo ? asset('storage/' . $person->photo) : asset('images/default-user.png') }}"
