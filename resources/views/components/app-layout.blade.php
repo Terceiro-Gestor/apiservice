@@ -13,7 +13,7 @@
 
 </head>
 
-<body x-data="{ page: 'ecommerce', loaded: true, darkMode: false, stickyMenu: false, sidebarToggle: false, scrollTop: false }" x-init="darkMode = JSON.parse(localStorage.getItem('darkMode') ?? 'false');
+<body x-cloak x-data="{ page: 'ecommerce', loaded: true, darkMode: false, stickyMenu: false, sidebarToggle: false, scrollTop: false }" x-init="darkMode = JSON.parse(localStorage.getItem('darkMode') ?? 'false');
 $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))" :class="{ 'dark bg-gray-900': darkMode }">
 
     <!-- ===== Preloader Start ===== -->
@@ -83,7 +83,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
                 cancelButtonText: "Cancelar",
-                confirmButtonText: "Sim, quero deletar!"
+                confirmButtonText: "Sim, desejo remover!"
             }).then((result) => {
                 if (result.isConfirmed) {
                     console.log(data)

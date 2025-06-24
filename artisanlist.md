@@ -23,10 +23,15 @@ php artisan route:clear
 
 php artisan make:crud atendidos api 
 
-## Route
+## Artisan
 
 php artisan r:l
 
 ## Icons 
 
 https://heroicons.com/
+
+
+## Livewire
+
+php artisan make:livewire name

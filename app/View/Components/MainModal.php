@@ -15,7 +15,7 @@ class MainModal extends Component
         public string $id,
         public string $title,
         public $footer = null,
-        public string $class = 'w-[20vw] h-[20vh]'
+        public string $class = 'w-[50vw] h-[50vh]'
     )
     {
         
@@ -26,6 +26,6 @@ class MainModal extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.main-modal');
+        return view('components.elements.main-modal');
     }
 }

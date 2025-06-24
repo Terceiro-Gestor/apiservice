@@ -13,7 +13,7 @@
             </svg>
         </button>
         <h2 class="text-xl font-semibold mb-4">{{ $title }}</h2>
-
+        
         <div>
             {{ $slot }}
         </div>
