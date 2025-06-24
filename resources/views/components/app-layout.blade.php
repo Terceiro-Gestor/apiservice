@@ -86,7 +86,6 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                 confirmButtonText: "Sim, desejo remover!"
             }).then((result) => {
                 if (result.isConfirmed) {
-                    console.log(data)
                     Livewire.dispatch("confirmDeleteContact", { id: data.id})
                 }
             });

@@ -1,6 +1,6 @@
 <div>
     <div class="flex justify-end items-center mb-2">
-        <button x-on:click="$dispatch('open-modal', { id: 'contact' })"
+        <button wire:click="resetFields()" x-on:click="$dispatch('open-modal', { id: 'contact' })"
             class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
             Novo Contato
         </button>
@@ -52,13 +52,13 @@
     @endif
 
     <x-main-modal id="contact" title="{{ $contactId ? 'Editar Contato' : 'Novo Contato' }}" class="w-[60vw]">
-        
+
         <h2 class="text-xl font-bold mb-4"></h2>
 
         <form wire:submit.prevent="save" class="space-y-4">
             <div>
                 <label for="type" class="block font-semibold mb-1">Tipo</label>
-                <select id="type" wire:model.defer="type" class="w-full border rounded px-3 py-2">
+                <select id="type" wire:model.defer="contact.type" class="w-full border rounded px-3 py-2">
                     <option value="">Selecione</option>
                     <option value="WhatsApp">WhatsApp</option>
                     <option value="Celular">Celular</option>
@@ -71,14 +71,14 @@
 
             <div>
                 <label for="value" class="block font-semibold mb-1">Valor</label>
-                <input id="value" type="text" wire:model.defer="value" class="w-full border rounded px-3 py-2" />
+                <input id="value" type="text" wire:model.defer="contact.value" class="w-full border rounded px-3 py-2" />
                 @error('value')
                     <span class="text-red-600 text-sm">{{ $message }}</span>
                 @enderror
             </div>
 
             <div class="flex items-center space-x-2">
-                <input id="main" type="checkbox" wire:model.defer="main" />
+                <input id="main" type="checkbox" wire:model.defer="contact.main" />
                 <label for="main" class="select-none">Principal</label>
             </div>
 

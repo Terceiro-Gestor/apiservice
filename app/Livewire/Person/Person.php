@@ -13,70 +13,72 @@ class Person extends Component
     use HasNotification, HandlesModals;
 
     public $person;
-    public $contacts = [];
     public $personId;
-    public $type, $value, $main = false;
+    public $form = [];
 
-    protected PersonService $contactService;
+    protected PersonService $personService;
 
-    public function boot(PersonService $contactService)
+    public function boot(PersonService $personService)
     {
-        $this->contactService = $contactService;
+        $this->personService = $personService;
     }
 
-    public function mount($person)
+
+    public function mount($person = null)
     {
-        $this->person = $person;
-        $this->loadPersons();
+        if ($person) {
+            $this->person = $person;
+            $this->personId = $person->id;
+            $this->form = $person->toArray();
+        } else {
+            $this->person = null;
+            $this->resetForm();
+        }
     }
 
     public function loadPersons()
     {
-        $this->person = $this->person;
+        if ($this->personId) {
+            $this->person = $this->personService->findOrFail($this->personId);
+            $this->form = $this->person->toArray();
+        }
     }
 
-    public function resetFields()
+    public function resetForm()
     {
         $this->personId = null;
-        $this->type = null;
-        $this->value = null;
-        $this->main = false;
+        $this->form = [];
     }
 
     public function edit($personId = null)
     {
-        $this->resetValidation();
-        $this->resetFields();
+        $this->resetForm();
 
         if ($personId) {
-            $contact = $this->contactService->findOrFail($personId);
-            $this->personId = $contact->id;
-            $this->type = $contact->type;
-            $this->value = $contact->value;
-            $this->main = (bool)$contact->main;
+            $person = $this->personService->findOrFail($personId);
+            $this->personId = $person->id;
+            $this->person = $person;
+            $this->form = $person->toArray();
         }
     }
 
     public function save()
     {
-        $data = [
-            'type' => $this->type,
-            'value' => $this->value,
-            'main' => $this->main,
-        ];
+        $data = $this->form;
 
         if ($this->personId) {
-            $contact = $this->contactService->findOrFail($this->personId);
-            $contact = $this->contactService->update($contact, $data);
-            $message = "O contato <span class='text-blue-500'>{$contact->value}</span> foi atualizado!";
+            $person = $this->personService->findOrFail($this->personId);
+            $person = $this->personService->update($person, $data);
+            $message = "O contato <span class='text-blue-500'>{$person->full_name}</span> foi atualizado!";
         } else {
-            $contact = $this->contactService->store($this->person, $data);
-            $message = "O contato <span class='text-blue-500'>{$contact->value}</span> foi adicionado!";
+            $person = $this->personService->store($this->person, $data);
+            $this->personId = $person->id;
+            $message = "O contato <span class='text-blue-500'>{$person->full_name}</span> foi adicionado!";
         }
 
         $this->loadPersons();
-        $this->resetFields();
-        $this->closeModal('contact');
+        $this->resetForm();
+        $this->closeModal('person');
         $this->sweetSuccess("Sucesso!", $message);
     }
     public function contactDelete($id)
@@ -90,13 +92,17 @@ class Person extends Component
     public function confirmDeletePerson($id)
     {
 
-        $contact = $this->contactService->findOrFail($id);
+        $person = $this->personService->findOrFail($id);
 
-        $this->contactService->delete($contact);
+        $this->personService->delete($person);
 
-        $this->loadPersons();
+        if ($this->personId === $id) {
+            $this->resetForm();
+            $this->person = null;
+            $this->personId = null;
+        }
 
-        $this->sweetSuccess("Sucesso!", "O contato <span class='text-blue-500'>{$contact->value}</span> foi removido!");
+        $this->sweetSuccess("Sucesso!", "O contato <span class='text-blue-500'>{$person->full_name}</span> foi removido!");
     }
 
     public function render()

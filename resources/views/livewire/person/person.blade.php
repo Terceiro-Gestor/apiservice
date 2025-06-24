@@ -11,12 +11,12 @@
                         {{ $person->full_name }}
                     </h4>
                     <div class="flex flex-col items-center gap-1 text-center xl:flex-row xl:gap-3 xl:text-left">
-                        <p class="text-sm text-gray-500 dark:text-gray-400">
+                        <p class="text-sm text-gray-500 dark:text-gray-400" >
                             {{ $person->gender }}
                         </p>
                         <div class="hidden h-3.5 w-px bg-gray-300 dark:bg-gray-700 xl:block"></div>
                         <p class="text-sm text-gray-500 dark:text-gray-400">
-                            {{ $person->address->street }}
+                            {{ $person->birth_date }}
                         </p>
                     </div>
                 </div>
@@ -63,7 +63,7 @@
                     </button>
                 </div>
             </div>
-            <button x-on:click="$dispatch('open-modal', { id: 'person' })"
+            <button wire:click="edit('{{ $person->id }}')" x-on:click="$dispatch('open-modal', { id: 'person' })"
                 class="flex w-full items-center justify-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 lg:inline-flex lg:w-auto">
                 <svg class="fill-current" width="18" height="18" viewBox="0 0 18 18" fill="none"
                     xmlns="http://www.w3.org/2000/svg">
@@ -78,83 +78,9 @@
 
     <div>
         <x-main-modal id="person" title="{{ $person->full_name }}" class="w-[60vw]">
-            <form wire:submit.prevent="save" class="space-y-4">
-                <div>
-                    <label class="block">Nome Completo</label>
-                    <input type="text" wire:model.defer="full_name" class="w-full border rounded px-3 py-2" />
-                    @error('full_name')
-                        <span class="text-red-600 text-sm">{{ $message }}</span>
-                    @enderror
-                </div>
 
-                <div>
-                    <label class="block">Nome Social</label>
-                    <input type="text" wire:model.defer="social_name" class="w-full border rounded px-3 py-2" />
-                </div>
+            @include('person.form')
 
-                <div>
-                    <label class="block">Data de Nascimento</label>
-                    <input type="date" wire:model.defer="birth_date" class="w-full border rounded px-3 py-2" />
-                </div>
-
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block">Gênero</label>
-                        <select wire:model.defer="gender" class="w-full border rounded px-3 py-2">
-                            <option value="">Selecione</option>
-                            <option value="Masculino">Masculino</option>
-                            <option value="Feminino">Feminino</option>
-                            <option value="Outro">Outro</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block">Estado Civil</label>
-                        <select wire:model.defer="marital_status" class="w-full border rounded px-3 py-2">
-                            <option value="">Selecione</option>
-                            <option value="Solteiro">Solteiro</option>
-                            <option value="Casado">Casado</option>
-                            <option value="Divorciado">Divorciado</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-3 gap-4">
-                    <div>
-                        <label class="block">País</label>
-                        <input type="text" wire:model.defer="country" class="w-full border rounded px-3 py-2" />
-                    </div>
-                    <div>
-                        <label class="block">Estado</label>
-                        <input type="text" wire:model.defer="state" class="w-full border rounded px-3 py-2" />
-                    </div>
-                    <div>
-                        <label class="block">Cidade</label>
-                        <input type="text" wire:model.defer="city" class="w-full border rounded px-3 py-2" />
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-3 gap-4">
-                    <div>
-                        <label class="block">CPF</label>
-                        <input type="text" wire:model.defer="cpf" class="w-full border rounded px-3 py-2" />
-                    </div>
-                    <div>
-                        <label class="block">RG</label>
-                        <input type="text" wire:model.defer="rg" class="w-full border rounded px-3 py-2" />
-                    </div>
-                    <div>
-                        <label class="block">NIS</label>
-                        <input type="text" wire:model.defer="nis" class="w-full border rounded px-3 py-2" />
-                    </div>
-                </div>
-
-                <div class="flex justify-end mt-4">
-                    <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
-                        Salvar
-                    </button>
-                </div>
-            </form>
         </x-main-modal>
     </div>
 

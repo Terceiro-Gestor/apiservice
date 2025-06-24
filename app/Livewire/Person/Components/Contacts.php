@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Person;
+namespace App\Livewire\Person\Components;
 
 use Livewire\Component;
 use App\Traits\HasNotification;
@@ -13,9 +13,9 @@ class Contacts extends Component
     use HasNotification, HandlesModals;
 
     public $person;
-    public $contacts = [];
     public $contactId;
-    public $type, $value, $main = false;
+    public $contacts = [];
+    public $contact = [];
 
     protected ContactService $contactService;
 
@@ -38,32 +38,25 @@ class Contacts extends Component
     public function resetFields()
     {
         $this->contactId = null;
-        $this->type = null;
-        $this->value = null;
-        $this->main = false;
+        $this->contact = [];
     }
 
     public function edit($contactId = null)
     {
-        $this->resetValidation();
+
         $this->resetFields();
 
         if ($contactId) {
             $contact = $this->contactService->findOrFail($contactId);
             $this->contactId = $contact->id;
-            $this->type = $contact->type;
-            $this->value = $contact->value;
-            $this->main = (bool)$contact->main;
+            $this->contact = $contact->only(['type', 'value', 'main']);
+            $this->contact['main'] = (bool) $this->contact['main'];
         }
     }
 
     public function save()
-    {
-        $data = [
-            'type' => $this->type,
-            'value' => $this->value,
-            'main' => $this->main,
-        ];
+    {   
+        $data = $this->contact;
 
         if ($this->contactId) {
             $contact = $this->contactService->findOrFail($this->contactId);
@@ -79,6 +72,7 @@ class Contacts extends Component
         $this->closeModal('contact');
         $this->sweetSuccess("Sucesso!", $message);
     }
+
     public function contactDelete($id)
     {
         // Emite evento para SweetAlert no JS

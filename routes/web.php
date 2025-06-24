@@ -5,11 +5,13 @@ use App\Http\Controllers\PersonController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\PeopleRelationshipController;
+use App\Livewire\Person\Show;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/pessoas/{person}', Show::class)->name('person.show');
 
 Route::resource('people', PersonController::class);
 

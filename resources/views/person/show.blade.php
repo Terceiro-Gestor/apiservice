@@ -24,7 +24,7 @@
             <!--  Contatos -->
             <div x-show="step === 3" class="">
 
-                <livewire:person.contacts :person="$person" :key="'person-contacts-'.$person->id" />
+                <livewire:person.components.contacts :person="$person" :key="'person-contacts-'.$person->id" />
 
             </div>
 

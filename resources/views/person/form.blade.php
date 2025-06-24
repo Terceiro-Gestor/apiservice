@@ -1,6 +1,6 @@
 <div class="w-full" x-data>
 
-    <form @submit.prevent="submitForm" x-ref="form">
+    <form wire:submit.prevent="save" x-ref="form">
         @csrf
         <!-- Foto -->
         <fieldset class="border border-gray-300 rounded p-6 mt-4 grid grid-cols-2" x-data="photoView()">
@@ -30,60 +30,59 @@
             <legend class="text-sm font-semibold text-gray-700 px-2">Dados Pessoais</legend>
             <div class="col-span-2">
                 <x-input-label for="full_name" :value="__('Nome Completo')" />
-                <x-text-input id="full_name" name="full_name" type="text" class="mt-1 block w-full" :value="old('full_name', $person?->full_name)"
-                    autocomplete="full_name" placeholder="Nome Completo" />
+                <x-text-input wire:model.defer="form.full_name" id="full_name" name="full_name" type="text"
+                    class="mt-1 block w-full" autocomplete="full_name" placeholder="Nome Completo" />
                 <x-input-error class="mt-2" :messages="$errors->get('full_name')" />
             </div>
             <div>
                 <x-input-label for="social_name" :value="__('Nome Social')" />
-                <x-text-input id="social_name" name="social_name" type="text" class="mt-1 block w-full"
-                    :value="old('social_name', $person?->social_name)" autocomplete="social_name" placeholder="Nome Social" />
+                <x-text-input wire:model.defer="form.social_name" id="social_name" name="social_name" type="text"
+                    class="mt-1 block w-full" autocomplete="social_name" placeholder="Nome Social" />
                 <x-input-error class="mt-2" :messages="$errors->get('social_name')" />
             </div>
             <div>
                 <x-input-label for="birth_date" :value="__('Data de Nascimento')" />
                 <x-text-input id="birth_date" name="birth_date" type="date" class="mt-1 block w-full"
-                    :value="old('birth_date', $person?->birth_date)" autocomplete="birth_date" placeholder="Data de Nascimento" />
+                    wire:model.defer="form.birth_date" autocomplete="birth_date" placeholder="Data de Nascimento" />
                 <x-input-error class="mt-2" :messages="$errors->get('birth_date')" />
             </div>
             <div>
                 <x-input-label for="gender" :value="__('Gênero')" />
-                <select id="gender" name="gender"
+                <select wire:model.defer="form.gender" id="gender" name="gender"
                     class="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
                     autocomplete="gender">
                     <option value="">Selecione o gênero</option>
-                    <option value="Masculino" {{ old('gender', $person?->gender) == 'Masculino' ? 'selected' : '' }}>
+                    <option value="Masculino">
                         Masculino
                     </option>
-                    <option value="Feminino" {{ old('gender', $person?->gender) == 'Feminino' ? 'selected' : '' }}>
+                    <option value="Feminino">
                         Feminino
                     </option>
-                    <option value="Outro" {{ old('gender', $person?->gender) == 'Outro' ? 'selected' : '' }}>Outro
+                    <option value="Outro">Outro
                     </option>
                 </select>
                 <x-input-error class="mt-2" :messages="$errors->get('gender')" />
             </div>
             <div>
                 <x-input-label for="ethnicity" :value="__('Etnia')" />
-                <select id="ethnicity" name="ethnicity"
+                <select wire:model.defer="form.ethnicity" id="ethnicity" name="ethnicity"
                     class="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
                     autocomplete="ethnicity">
                     <option value="">Selecione a etnia</option>
-                    <option value="Branca" {{ old('ethnicity', $person?->ethnicity) == 'Branca' ? 'selected' : '' }}>
+                    <option value="Branca">
                         Branca
                     </option>
-                    <option value="Preta" {{ old('ethnicity', $person?->ethnicity) == 'Preta' ? 'selected' : '' }}>
+                    <option value="Preta">
                         Preta
                     </option>
-                    <option value="Parda" {{ old('ethnicity', $person?->ethnicity) == 'Parda' ? 'selected' : '' }}>
+                    <option value="Parda">
                         Parda
                     </option>
-                    <option value="Amarela" {{ old('ethnicity', $person?->ethnicity) == 'Amarela' ? 'selected' : '' }}>
+                    <option value="Amarela">
                         Amarela</option>
-                    <option value="Indígena"
-                        {{ old('ethnicity', $person?->ethnicity) == 'Indígena' ? 'selected' : '' }}>
+                    <option value="Indígena">
                         Indígena</option>
-                    <option value="Outro" {{ old('ethnicity', $person?->ethnicity) == 'Outro' ? 'selected' : '' }}>
+                    <option value="Outro">
                         Outro
                     </option>
                 </select>
@@ -92,27 +91,21 @@
 
             <div>
                 <x-input-label for="marital_status" :value="__('Estado Civil')" />
-                <select id="marital_status" name="marital_status"
+                <select wire:model.defer="form.marital_status" id="marital_status" name="marital_status"
                     class="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
                     autocomplete="marital_status">
                     <option value="">Selecione o estado civil</option>
-                    <option value="Solteiro(a)"
-                        {{ old('marital_status', $person?->marital_status) == 'Solteiro(a)' ? 'selected' : '' }}>
+                    <option value="Solteiro(a)">
                         Solteiro(a)</option>
-                    <option value="Casado(a)"
-                        {{ old('marital_status', $person?->marital_status) == 'Casado(a)' ? 'selected' : '' }}>
+                    <option value="Casado(a)">
                         Casado(a)</option>
-                    <option value="Divorciado(a)"
-                        {{ old('marital_status', $person?->marital_status) == 'Divorciado(a)' ? 'selected' : '' }}>
+                    <option value="Divorciado(a)">
                         Divorciado(a)</option>
-                    <option value="Viúvo(a)"
-                        {{ old('marital_status', $person?->marital_status) == 'Viúvo(a)' ? 'selected' : '' }}>Viúvo(a)
+                    <option value="Viúvo(a)">Viúvo(a)
                     </option>
-                    <option value="Separado(a)"
-                        {{ old('marital_status', $person?->marital_status) == 'Separado(a)' ? 'selected' : '' }}>
+                    <option value="Separado(a)">
                         Separado(a)</option>
-                    <option value="Outro"
-                        {{ old('marital_status', $person?->marital_status) == 'Outro' ? 'selected' : '' }}>Outro
+                    <option value="Outro">Outro
                     </option>
                 </select>
                 <x-input-error class="mt-2" :messages="$errors->get('marital_status')" />
@@ -124,21 +117,22 @@
             <legend class="text-sm font-semibold text-gray-700 px-2">Documentação Pessoal</legend>
             <div>
                 <x-input-label for="nis" :value="__('NIS')" />
-                <x-text-input id="nis" name="nis" type="text" class="mt-1 block w-full" :value="old('nis', $person?->nis)"
+                <x-text-input wire:model.defer="form.nis" id="nis" name="nis" type="text" class="mt-1 block w-full"
                     autocomplete="nis" placeholder="NIS" />
                 <x-input-error class="mt-2" :messages="$errors->get('nis')" />
             </div>
             <div>
                 <x-input-label for="cpf" :value="__('CPF')" />
-                <x-text-input id="cpf" name="cpf" type="text" class="mt-1 block w-full" x-ref="cpf"
-                    x-init="IMask($refs.cpf, { mask: '000.000.000-00' })" maxlength="14" :value="old('cpf', $person?->cpf)" autocomplete="cpf"
+                <x-text-input wire:model.defer="form.cpf" id="cpf" name="cpf" type="text" class="mt-1 block w-full" x-ref="cpf"
+                    x-init="IMask($refs.cpf, { mask: '000.000.000-00' })" maxlength="14" autocomplete="cpf"
                     placeholder="CPF" />
                 <x-input-error class="mt-2" :messages="$errors->get('cpf')" />
             </div>
             <div>
                 <x-input-label for="rg" :value="__('RG')" />
-                <x-text-input x-ref="rg" x-init="IMask($refs.rg, { mask: '00.000.000-00' })" maxlength="14" id="rg" name="rg"
-                    type="text" class="mt-1 block w-full" :value="old('rg', $person?->rg)" autocomplete="rg"
+                <x-text-input wire:model.defer="form.rg" x-ref="rg" id="rg" name="rg" maxlength="14" 
+                    x-init="IMask($refs.rg, { mask: '00.000.000-00' })"
+                    type="text" class="mt-1 block w-full" autocomplete="rg"
                     placeholder="RG" />
                 <x-input-error class="mt-2" :messages="$errors->get('rg')" />
             </div>
@@ -152,7 +146,7 @@
                 <!-- País -->
                 <div class="mb-3">
                     <x-input-label for="country" :value="__('País')" />
-                    <select id="country" name="country" x-model="selectedCountry"
+                    <select wire:model.defer="form.country" id="country" name="country" x-model="selectedCountry"
                         x-html="renderOptions(countries, selectedCountry)"
                         class="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
                     </select>
@@ -161,7 +155,7 @@
                 <!-- Estado -->
                 <div class="mb-3">
                     <x-input-label for="state" :value="__('Estado')" />
-                    <select id="state" name="state" x-model="selectedState"
+                    <select wire:model.defer="form.state" id="state" name="state" x-model="selectedState"
                         x-html="renderOptions(states, selectedState)"
                         class="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
                     </select>
@@ -170,7 +164,7 @@
                 <!-- Cidade -->
                 <div class="mb-3">
                     <x-input-label for="city" :value="__('Cidade')" />
-                    <select id="city" name="city" x-model="selectedCity"
+                    <select wire:model.defer="form.city" id="city" name="city" x-model="selectedCity"
                         x-html="renderOptions(cities, selectedCity)"
                         class="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
                     </select>
@@ -197,9 +191,9 @@
             citiesAll: [],
             states: [],
             cities: [],
-            selectedCountry: '{{ old('country', $person?->country ?? 'Brazil') }}',
-            selectedState: '{{ old('state', $person?->state ?? '') }}',
-            selectedCity: '{{ old('city', $person?->city ?? '') }}',
+            selectedCountry: '{{ old('country', $form?->country ?? 'Brazil') }}',
+            selectedState: '{{ old('state', $form?->state ?? 'São Paulo') }}',
+            selectedCity: '{{ old('city', $form?->city ?? 'Ribeirão Preto') }}',
 
             async init() {
                 // 1. Carrega todos os países e estados

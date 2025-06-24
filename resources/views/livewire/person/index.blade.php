@@ -3,8 +3,7 @@
     <div class="py-6 inline-block min-w-full align-middle sm:p-8 bg-white shadow sm:rounded-lg dark:bg-gray-700">
 
         <div class="flex justify-end">
-            <button wire:click="$emitTo('person.person', 'resetFields')"
-                x-on:click="$dispatch('open-modal', { id: 'person' })"
+            <button x-on:click="$dispatch('open-modal', { id: 'person' })"
                 class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
                 Novo
             </button>
@@ -64,8 +63,7 @@
                         <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900">
                             <div class="inline-flex rounded-md shadow-xs" role="group">
                                 <button type="button"
-                                    class="cursor-pointer focus:outline-none text-white bg-green-400 hover:bg-green-500 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-900"
-                                    onclick="window.location.href='{{ route('people.show', $person->id) }}'">
+                                    class="cursor-pointer focus:outline-none text-white bg-green-400 hover:bg-green-500 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-900">
                                     <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                         fill="currentColor" viewBox="0 0 20 20">
                                         <path
@@ -80,11 +78,5 @@
         </table>
 
     </div>
-
-    <x-main-modal id="person" title="Novo" class="w-[60vw]">
-
-        @include('person.form')
-
-    </x-main-modal>
 
 </x-app-layout>
