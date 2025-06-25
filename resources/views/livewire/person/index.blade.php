@@ -27,18 +27,7 @@
                 </th>
                 <th>
                     <span class="flex items-center">
-                        Email
-                    </span>
-                </th>
-                <th>
-                    <span class="flex items-center">
-                        Telefone
-
-                    </span>
-                </th>
-                <th>
-                    <span class="flex items-center">
-                        Nascimento
+                        Idade
                     </span>
                 </th>
 
@@ -56,10 +45,6 @@
                     </td>
                     <td class="font-medium text-black-900 whitespace-nowrap dark:text-white">
                         {{ $person->social_name }}</td>
-                    <td>
-                        {{ $person->email }}</td>
-                    <td>
-                        {{ $person->phone }}</td>
                     <td>
                         {{ $person->birth_date }}</td>
 

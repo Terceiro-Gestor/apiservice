@@ -6,9 +6,9 @@
             Adicionar Familiar
         </button>
 
-        <x-modal-form id="modal-family" title="Cadastrar Novo Familiar" width="w-[80vw]" height="h-[90vh]">
+        <x-main-modal id="modal-family" title="Cadastrar Novo Familiar" width="w-[80vw]" height="h-[90vh]">
             @include('person.form-family')
-        </x-modal-form>
+        </x-main-modal>
     </div>
 
     <!-- Tabela com contatos -->

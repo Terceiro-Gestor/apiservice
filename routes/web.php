@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\AddressController;
-use App\Http\Controllers\PeopleRelationshipController;
 
 Route::get('/', function () {
     return view('welcome');

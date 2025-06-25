@@ -6,9 +6,9 @@
             Novo Endereço
         </button>
 
-        <x-modal-form id="modal-address" title="Formulário de Endereço" width="w-[70vw]" height="h-[70vh]">
+        <x-main-modal id="modal-address" title="Formulário de Endereço" width="w-[70vw]" height="h-[70vh]">
             @include('address.form')
-        </x-modal-form>
+        </x-main-modal>
     </div>
 
     <!-- Tabela com dados do endereço -->

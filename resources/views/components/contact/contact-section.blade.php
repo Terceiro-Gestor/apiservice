@@ -2,13 +2,13 @@
 
     <div class="mb-4">
 
-        <button @click="$dispatch('open-modal', 'modal-contato')" class="bg-indigo-600 text-white px-4 py-2 rounded">
+        <button @click="$dispatch('open-modal', 'modalContato')" class="bg-indigo-600 text-white px-4 py-2 rounded">
             Novo Contato
         </button>
 
-        <x-modal-form id="modal-contato" title="Formulário de Contato" width="w-[80vw]" height="h-[90vh]">
+        <x-main-modal id="createContato" title="Formulário de Contato" width="w-[80vw]" height="h-[90vh]">
             @include('contact.form')
-        </x-modal-form>
+        </x-main-modal>
     </div>
 
     <!-- Tabela com contatos -->
