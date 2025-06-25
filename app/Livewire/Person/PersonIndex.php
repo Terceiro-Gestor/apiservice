@@ -10,15 +10,24 @@ use App\Livewire\Traits\HandlesModals;
 use App\Models\Person;
 
 // Livewire\Person\Index.php
-class Index extends Component
-{   
+class PersonIndex extends Component
+{
     use HasNotification, HandlesModals;
 
     public $people;
 
+    protected $listeners = [
+        'personCreated' => 'refreshList',
+    ];
+
     public function mount()
     {
-        $this->people = Person::all();
+        $this->refreshList();
+    }
+
+    public function refreshList()
+    {
+        $this->people = Person::orderBy('created_at', 'desc')->get();
     }
 
     public function render()
